@@ -1,0 +1,59 @@
+<html>
+<head>
+<link rel='stylesheet' href='./styles.css'>
+<!-- the behaviour tree library -->
+<script src='../lib/tree.js'></script>
+<script src='./colours.js'></script>
+<!-- a script to render a behaviour tree into a given div -->
+<script src='./tree_render.js'></script>
+<script src='./seedrandom.min.js'></script>
+<!-- the game grid -->
+<script src='./grid.js'></script>
+<script src='./traits.js'></script>
+<!-- behaviours -->
+<script src='./behaviours.js'></script>
+<!-- definition of an agent -->
+<script src='./agent.js'></script>
+<!-- food that agents can eat -->
+<script src='./food.js'></script>
+</head>
+<body>
+<button onclick='tick();'>Tick!</button>
+
+<div id='debug' style='float:right'></div>
+<div id='grid'></div>
+<script>
+	var then = Date.now();
+
+	function tick() {
+		var now = Date.now();
+		//grid.update((now - then) / 1000); // use this when ticking automatically
+		grid.update(1 / 4); // we use this for now since we are ticking manually.
+		grid.render();
+		then = now;
+	}
+
+	Math.seedrandom("Behaviour trees!");
+
+	var numAgents = 20;
+	var agentColours = MakeUniqueColours(numAgents);
+
+	var grid = new Grid(50, 50, document.getElementById('grid'));
+	grid.debugTo = document.getElementById('debug');
+	for(var a=0; a<numAgents; a++) {
+		grid.addThing(new Agent(grid, agentColours[a]));
+	}
+
+	for(var f=0; f<10; f++) {
+		grid.addThing(new Food());
+	}
+	tick();
+
+	document.addEventListener('keypress', function(ev) {
+		if(ev.charCode === 116) {
+			tick();
+		}
+	});
+</script>
+</body>
+</html>

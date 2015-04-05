@@ -1,0 +1,19 @@
+{
+  "name": "behaviour_tree",
+  "version": "1.0.0",
+  "description": "A Javascript implementation of Behaviour Trees",
+  "main": "tree.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben Miller",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.2.1",
+    "jasmine-core": "^2.2.0",
+    "jasmine-node": "^1.14.5",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.5"
+  }
+}
