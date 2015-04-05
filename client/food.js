@@ -18,7 +18,7 @@ function Food(grid) {
 			var c = time * this.claimedBy.traits.eatingSpeed;
 			if(c >= this.quantity) {
 				this.consumed = true;
-				grid.removeThing(food);
+				grid.removeThing(this);
 				// here we would also update how hungry the agent isn't
 			}
 		}

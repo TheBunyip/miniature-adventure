@@ -21,7 +21,7 @@
 <button onclick='tick();'>Tick!</button>
 
 <div id='debug' style='float:right'></div>
-<div id='grid'></div>
+<canvas id='sim' width='500', height='500'></canvas>
 <script>
 	var then = Date.now();
 
@@ -38,14 +38,14 @@
 	var numAgents = 20;
 	var agentColours = MakeUniqueColours(numAgents);
 
-	var grid = new Grid(50, 50, document.getElementById('grid'));
+	var grid = new Grid(50, 50, document.getElementById('sim'));
 	grid.debugTo = document.getElementById('debug');
 	for(var a=0; a<numAgents; a++) {
 		grid.addThing(new Agent(grid, agentColours[a]));
 	}
 
 	for(var f=0; f<10; f++) {
-		grid.addThing(new Food());
+		grid.addThing(new Food(grid));
 	}
 	tick();
 

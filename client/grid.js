@@ -1,42 +1,27 @@
 'use strict';
 
-function Grid(cols, rows, div) {
+function Grid(cols, rows, canvas) {
 	this.worldWidth = cols;
 	this.worldHeight = rows;
 	this.things = [];
 	this.foodTimer = 0;
 	this.FOOD_DROP_INTERVAL = 5; // in seconds
 
-	var table = document.createElement('table');
+	var renderCtx = null;
+	var cellSize = {};
 
 	this.setup = function() {
-		for(var r=0; r<rows; r++) {
-			var row = table.insertRow(-1);
-			for(var c=0; c<cols; c++) {
-				var cell = row.insertCell(-1);
-				cell.innerHTML = c + '-' + r;
-			}
-		}
+
+		renderCtx = canvas.getContext('2d');
+		cellSize.x = canvas.width / cols;
+		cellSize.y = canvas.height / rows;
 
 		this.reset();
-
-		div.innerHTML = '';
-		div.appendChild(table);
 	};
 
 
 	this.reset = function() {
-		for(var r=0; r<rows; r++) {
-			for(var c=0; c<cols; c++) {
-				var cell = table.rows[r].cells[c];
-				cell.innerHTML = '<div></div>';
-				cell.style.outline = 'none';
-				cell.style.backgroundColor = 'transparent';
-				cell.style.fontSize = '8px';
-				cell.style.fontWeight = '100';
-			}
-		}
-
+		renderCtx.clearRect(0, 0, canvas.width, canvas.height);
 		if(this.debugTo) {
 			this.debugTo.innerHTML = '';
 		}
@@ -79,24 +64,17 @@ function Grid(cols, rows, div) {
 		var self = this;
 		this.reset();
 
+		renderCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
 		this.eachThing(function(food) {
-			var cell = table.rows[food.pos.y].cells[food.pos.x];
-			cell.innerHTML = '<div>*</div>';
-			cell.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
-			cell.style.fontSize = '10px';
-			cell.style.fontWeight = '400';
+			renderCtx.fillRect(food.pos.x * cellSize.x, food.pos.y * cellSize.y, cellSize.x, cellSize.y);
 		}, Food);
 
 		this.eachThing(function(agent) {
-			var cell = table.rows[agent.targetPos.y].cells[agent.targetPos.x];
-			cell.style.outline = 'thin solid ' + agent.colour;
-			cell.style.fontSize = '10px';
-			cell.style.fontWeight = '400';
+			renderCtx.strokeStyle = agent.colour;
+			renderCtx.strokeRect(Math.floor(agent.targetPos.x) * cellSize.x, Math.floor(agent.targetPos.y) * cellSize.y, cellSize.x, cellSize.y);
 
-			cell = table.rows[agent.pos.y].cells[agent.pos.x];
-			cell.style.backgroundColor = agent.colour;
-			cell.style.fontSize = '12px';
-			cell.style.fontWeight = '400';
+			renderCtx.fillStyle = agent.colour;
+			renderCtx.fillRect(Math.floor(agent.pos.x) * cellSize.x, Math.floor(agent.pos.y) * cellSize.y, cellSize.x, cellSize.y);
 
 			if(self.debugTo) {
 				var agentDebugDiv = document.createElement('div');

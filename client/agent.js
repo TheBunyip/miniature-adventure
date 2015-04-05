@@ -7,8 +7,8 @@ function Agent(grid, colour) {
 	this.colour = colour;
 
 	this.traits = {
-		movingSpeed: 3 + (Math.random() * 4) // = num grid cells per second
-		eatingSpeed: 1 + (Math.random() * 3) //
+		movingSpeed: 3 + (Math.random() * 4), // = num grid cells per second
+		eatingSpeed: 1 + (Math.random() * 3), //
 	};
 
 	this.genes = {
